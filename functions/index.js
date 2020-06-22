@@ -47,7 +47,7 @@ app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
 //
 
-exports.api = functions.region('europe-west1').https.onRequest(app);
+exports.api = functions.https.onRequest(app);
 
 exports.createNotificationOnLike = functions
   .firestore.document('likes/{id}')
@@ -114,8 +114,8 @@ exports.createNotificationOnComment = functions
 exports.onUserImageChange = functions
   .firestore.document('/users/{userId}')
   .onUpdate((change) => {
-    console.log(change.before.data());
-    console.log(change.after.data());
+    console.log(change.before.data()); //antes de cambiar la imagen
+    console.log(change.after.data()); //despues de hacerlo
     if (change.before.data().imageUrl !== change.after.data().imageUrl) {
       console.log('image has changed');
       const batch = db.batch();
